@@ -1,0 +1,12 @@
+
+print ("Enter no:");
+read S1;
+S0 = 0;
+while (S0 < S1) do
+	if ( S0 % 2 == 1) then
+		print S0 ;
+	endif;
+	S0 = S0 + 1;
+endwhile;
+			
+	

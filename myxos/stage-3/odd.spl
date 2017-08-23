@@ -1,12 +1,12 @@
 
-print ("Enter no:");
-read S1;
+print ("Enter no:");	
+read S1; 		// input n
 S0 = 0;
 while (S0 < S1) do
-	if ( S0 % 2 == 1) then
+	if ( S0 % 2 == 1) then	//checks whether the number is even or odd
 		print S0 ;
 	endif;
-	S0 = S0 + 1;
+	S0 = S0 + 1;	// incerment S0
 endwhile;
 			
 	

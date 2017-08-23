@@ -1,17 +1,17 @@
 decl
-	integer n;		//global interger n
+	integer n;
 enddecl
-integer main()		// main function
+integer main()
 {
 	integer a,b,c;
 	print ("enter n:");
-	read (n);		// input the value n
+	read (n);
 	a=2;
 	while (a <= n) do
 		b = 2;
 		c = 0;
 		while( b < a) do
-			if(a%b == 0) then 		
+			if(a%b == 0) then
 				c= 1;
 				break;
 			endif;
