@@ -1,0 +1,28 @@
+load(7,1);//loading exception handler from block 1 to page 7
+load(8,2);//loading exception handler from block 2 to page 8
+load(23,17);//loading interrupt 7 routine from block 17 to page 23
+load(24,18);//loading interrupt 7 routine from block 18 tp page 24
+[READY_LIST + 0] = 0;//starting address of PCB and PID of INIT is set to 0
+load(25,21);//loading INIT code from block to page
+load(26,22);
+load(27,23);
+PTBR = 1024;//PTBR of PID = 0  is set to 1024
+PTLR = 4;// set PTLR to 4
+[PTBR + 0] = 25;//loading code in page 25 as 1st entry to PTBR
+[PTBR + 1] = "01";// not referenced and valid
+[PTBR + 2] = 26;//loading code in page 26 as 2nd entry to PTBR
+[PTBR + 3] = "01";// not referenced and valid
+[PTBR + 4] = 27;//loading code in page 27 as 3rd entry to PTBR
+[PTBR + 5] = "01";// not referenced and valid
+[PTBR + 6] = 28;// Physical Page Number for Logical Page 3 (Stack)
+[PTBR + 7] = "01";//Auxiliary Information for Logical Page 3 (Stack)
+[READY_LIST + 1] = 2;// Sets the entry for STATE as Running
+SP = 3 * 512;// SP is set to starting of stack logical page
+[28 * 512] = 0;// Set up the IP value for INIT in the stack 
+load (11, 5);//loading interrupt 1 routine from disk to memory 
+load (12, 6);
+load (9, 3);//loading timer interrupt routine from disk to memory
+load (10, 4);
+load (5, 19);	// load FAT from disk block 19 to  memory page 5
+load (6, 20);	//load disk free list form disk block 20 to memory page 6
+ireturn ;// transfers control to user program

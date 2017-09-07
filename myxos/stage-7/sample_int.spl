@@ -1,0 +1,82 @@
+alias physicalSP S0;
+physicalSP = ([PTBR + 2 * (SP / 512)] * 512) + (SP % 512);
+
+alias sysCallNo S1;
+sysCallNo = [physicalSP - 1];
+
+alias fileName S2;
+fileName = [physicalSP - 3];
+
+if ( sysCallNo == 1) then
+		
+	alias temp S3;
+	temp = FAT;
+	while( temp < FAT + 64*8) do
+		
+		if ([temp] == fileName) then
+
+			[physicalSP - 2] = 0;
+			ireturn;
+		endif;
+		temp = temp + 8;
+	endwhile;
+	
+	alias fileBlock S4;
+	fileBlock = 0;
+	temp = 3072;
+	while ( temp < 3072 + 448) do
+		
+		if ([temp] == 0) then
+			fileBlock = temp ;
+			break;
+		endif;
+		temp = temp + 1;
+	endwhile;
+
+	if (fileBlock == 0) then
+		
+		[physicalSP -2] = -1;
+		ireturn;
+	endif;
+	
+	temp = FAT;
+	alias Space S5;
+	Space = -1;
+	while( temp < 3072) do
+		if([temp +2] == -1) then
+			
+			Space = temp;
+			break;
+		endif;
+		temp = temp + 8;
+	endwhile;
+
+	if (Space == -1) then
+		[physicalSP - 2] = -1;
+		ireturn;
+	endif;
+
+	[Space] = fileName;
+	[Space + 1] = 0;
+	[Space + 2] = fileBlock - 3072;
+
+	load (1, fileBlock);
+
+	temp = 512;
+	while (temp < (2*512)) do
+		[temp] = -1;
+		temp =temp + 1;
+	endwhile;
+	
+	[physicalSP - 2] = 0;
+	store(1,fileBlock);
+	
+	[fileBlock] = 1;
+	
+	load (5, 19);
+	load (6, 20);
+		
+	ireturn;
+
+endif;
+ireturn;
